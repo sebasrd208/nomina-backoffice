@@ -2,10 +2,6 @@ package com.example.mybatis.DTO;
 
 import java.util.List;
 
-/**
- *
- * @author sebas
- */
 public class SueldoNetoDTO {
 
     private String nombre;

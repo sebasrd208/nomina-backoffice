@@ -11,10 +11,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.*;
 
-/**
- *
- * @author sebas
- */
 @RestController
 @RequestMapping("/empleados")
 @Tag(name = "EMPLEADOS", description = "API PARA EMPLEADOS")

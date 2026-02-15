@@ -6,10 +6,6 @@ import org.apache.ibatis.mapping.*;
 import com.example.mybatis.DTO.*;
 import java.util.*;
 
-/**
- *
- * @author sebas
- */
 @Mapper
 public interface MapeoGeneral {
 

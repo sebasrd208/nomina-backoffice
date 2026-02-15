@@ -1,9 +1,5 @@
 package com.example.mybatis.values;
 
-/**
- *
- * @author sebas
- */
 public class GeneralValue {
 
     //EMPLEADO

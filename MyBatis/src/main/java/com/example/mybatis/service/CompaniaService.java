@@ -7,11 +7,6 @@ import com.example.mybatis.mappers.*;
 import org.springframework.stereotype.*;
 import org.springframework.beans.factory.annotation.*;
 
-/**
- *
- * @author sebas
- */
-
 @Service
 public class CompaniaService {
     

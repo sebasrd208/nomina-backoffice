@@ -2,10 +2,6 @@ package com.example.mybatis.DTO;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-/**
- *
- * @author sebas
- */
 public class DeduccionesDTO {
     
     @JsonIgnore

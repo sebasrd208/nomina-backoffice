@@ -1,10 +1,5 @@
 package com.example.mybatis.DTO;
 
-/**
- *
- * @author sebas
- */
-
 public class DocumentoDTO {
     
     private Integer idDocumento;    

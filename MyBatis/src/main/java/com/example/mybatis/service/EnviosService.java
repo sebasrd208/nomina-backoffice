@@ -32,10 +32,6 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 
-/**
- *
- * @author sebas
- */
 @Service
 public class EnviosService {
 
@@ -251,8 +247,7 @@ public class EnviosService {
     }
 
     @Async
-    public void envioCorreoAdjunto(String correo, String nombre) {
-
+    public void envioCorreoAdjunto(String correo, String nombre){
         try {
             byte[] pdfBytes = generatePdfSueldo(nombre);
 
@@ -328,5 +323,4 @@ public class EnviosService {
 
         return resultado;
     }
-
 }

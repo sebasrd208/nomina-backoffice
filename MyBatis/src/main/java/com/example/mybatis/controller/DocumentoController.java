@@ -9,11 +9,6 @@ import io.swagger.v3.oas.annotations.tags.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.*;
 
-/**
- *
- * @author sebas
- */
-
 @RestController
 @RequestMapping("/documentos")
 @Tag(name = "DOCUMENTOS", description = "API PARA DOCUMENTOS")
@@ -63,5 +58,4 @@ public class DocumentoController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"" + e.getMessage() + "\"}");
         }
     }
-    
 }

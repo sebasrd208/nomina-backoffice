@@ -13,10 +13,6 @@ import com.example.mybatis.DTO.DeduccionesDTO;
 import com.example.mybatis.DTO.ImpuestosDTO;
 import com.example.mybatis.mappers.MapeoGeneral;
 
-/**
- *
- * @author sebas
- */
 @Service
 public class EmpleadoService {
 
