@@ -6,11 +6,11 @@ import org.springframework.dao.DataAccessException;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
-import com.example.mybatis.DTO.EmpleadoDTO;
-import com.example.mybatis.DTO.SueldoNetoDTO;
-import com.example.mybatis.DTO.CompaniaDTO;
-import com.example.mybatis.DTO.DeduccionesDTO;
-import com.example.mybatis.DTO.ImpuestosDTO;
+import com.example.mybatis.dto.EmpleadoDTO;
+import com.example.mybatis.dto.SueldoNetoDTO;
+import com.example.mybatis.dto.CompaniaDTO;
+import com.example.mybatis.dto.DeduccionesDTO;
+import com.example.mybatis.dto.ImpuestosDTO;
 import com.example.mybatis.mappers.MapeoGeneral;
 
 @Service

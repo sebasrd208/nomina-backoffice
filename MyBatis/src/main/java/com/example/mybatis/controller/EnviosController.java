@@ -1,6 +1,6 @@
 package com.example.mybatis.controller;
 
-import com.example.mybatis.DTO.ResultadoEnvioDTO;
+import com.example.mybatis.dto.ResultadoEnvioDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.example.mybatis.service.EnviosService;

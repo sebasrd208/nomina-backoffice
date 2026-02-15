@@ -1,7 +1,7 @@
 package com.example.mybatis.service;
 
 import java.util.*;
-import com.example.mybatis.DTO.*;
+import com.example.mybatis.dto.*;
 import org.springframework.dao.*;
 import com.example.mybatis.mappers.*;
 import org.springframework.stereotype.*;

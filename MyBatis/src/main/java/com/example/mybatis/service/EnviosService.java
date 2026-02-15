@@ -1,12 +1,12 @@
 package com.example.mybatis.service;
 
-import com.example.mybatis.DTO.CompaniaDTO;
-import com.example.mybatis.DTO.DeduccionesDTO;
+import com.example.mybatis.dto.CompaniaDTO;
+import com.example.mybatis.dto.DeduccionesDTO;
 import java.util.List;
-import com.example.mybatis.DTO.DocumentoDTO;
-import com.example.mybatis.DTO.ImpuestosDTO;
-import com.example.mybatis.DTO.ResultadoEnvioDTO;
-import com.example.mybatis.DTO.SueldoNetoDTO;
+import com.example.mybatis.dto.DocumentoDTO;
+import com.example.mybatis.dto.ImpuestosDTO;
+import com.example.mybatis.dto.ResultadoEnvioDTO;
+import com.example.mybatis.dto.SueldoNetoDTO;
 import com.lowagie.text.Document;
 import com.lowagie.text.Element;
 import com.lowagie.text.Font;

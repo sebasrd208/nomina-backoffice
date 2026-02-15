@@ -3,7 +3,7 @@ package com.example.mybatis.mappers;
 import org.apache.ibatis.annotations.*;
 import com.example.mybatis.values.*;
 import org.apache.ibatis.mapping.*;
-import com.example.mybatis.DTO.*;
+import com.example.mybatis.dto.*;
 import java.util.*;
 
 @Mapper

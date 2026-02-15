@@ -1,7 +1,7 @@
 package com.example.mybatis.controller;
 
 import java.util.*;
-import com.example.mybatis.DTO.*;
+import com.example.mybatis.dto.*;
 import org.springframework.http.*;
 import com.example.mybatis.service.*;
 import io.swagger.v3.oas.annotations.*;

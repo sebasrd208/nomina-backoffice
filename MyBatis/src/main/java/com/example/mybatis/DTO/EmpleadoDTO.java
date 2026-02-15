@@ -1,4 +1,4 @@
-package com.example.mybatis.DTO;
+package com.example.mybatis.dto;
 
 public class EmpleadoDTO {
     
