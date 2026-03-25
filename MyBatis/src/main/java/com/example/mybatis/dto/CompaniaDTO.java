@@ -1,99 +1,34 @@
 package com.example.mybatis.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.example.mybatis.cifrado.CryptoUtils;
+import com.fasterxml.jackson.annotation.*;
+import javax.crypto.*;
+import lombok.*;
 
-/**
- *
- * @author sebas
- */
-
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class CompaniaDTO {
     
     @JsonIgnore
     private Integer idCompania;
     private String nombre;
     private String apellido;
-    private String num_empleado;
+    private String numEmpleado;
     private String rfc;
     private String compania;
     private String nota;
     private String trimestre;
 
-    public CompaniaDTO() {
+    // Encriptar los campos sensibles
+    public void encryptFields(SecretKey key) {
+        try {
+            if (apellido != null) apellido = CryptoUtils.encrypt(apellido, key);
+            if (numEmpleado != null) numEmpleado = CryptoUtils.encrypt(numEmpleado, key);
+            if (rfc != null) rfc = CryptoUtils.encrypt(rfc, key);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-
-    public CompaniaDTO(Integer idCompania, String nombre, String apellido, String num_empleado, String rfc, String compania, String nota, String trimestre) {
-        this.idCompania = idCompania;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.num_empleado = num_empleado;
-        this.rfc = rfc;
-        this.compania = compania;
-        this.nota = nota;
-        this.trimestre = trimestre;
-    }
-
-    public Integer getIdCompania() {
-        return idCompania;
-    }
-
-    public void setIdCompania(Integer idCompania) {
-        this.idCompania = idCompania;
-    }    
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getApellido() {
-        return apellido;
-    }
-
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }        
-
-    public String getNum_empleado() {
-        return num_empleado;
-    }
-
-    public void setNum_empleado(String num_empleado) {
-        this.num_empleado = num_empleado;
-    }
-
-    public String getRfc() {
-        return rfc;
-    }
-
-    public void setRfc(String rfc) {
-        this.rfc = rfc;
-    }
-
-    public String getCompania() {
-        return compania;
-    }
-
-    public void setCompania(String compania) {
-        this.compania = compania;
-    }
-
-    public String getNota() {
-        return nota;
-    }
-
-    public void setNota(String nota) {
-        this.nota = nota;
-    }
-
-    public String getTrimestre() {
-        return trimestre;
-    }
-
-    public void setTrimestre(String trimestre) {
-        this.trimestre = trimestre;
-    }    
 }

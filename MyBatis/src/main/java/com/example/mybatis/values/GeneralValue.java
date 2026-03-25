@@ -1,9 +1,5 @@
 package com.example.mybatis.values;
 
-/**
- *
- * @author sebas
- */
 public class GeneralValue {
 
     //EMPLEADO
@@ -35,14 +31,14 @@ public class GeneralValue {
     public static final String SP_DEDUCCIONES
             = "{ call PA_EMPLEADOS.SP_DEDUCCIONES ("
             + "  #{rec_cursor, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=r_SP_DEDUCCIONES},"
-            + "  #{PA_NOMBRE,  mode=IN, jdbcType=VARCHAR}"
+            + "  #{PA_EMPLEADO,    mode=IN, jdbcType=VARCHAR}"
             + ") "
             + "}";
     
     public static final String SP_IMPUESTOS
             = "{ call PA_EMPLEADOS.SP_IMPUESTOS ("
-            + "  #{rec_cursor,   mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=r_SP_IMPUESTOS},"
-            + "  #{PA_NOMBRE,    mode=IN, jdbcType=VARCHAR}"
+            + "  #{rec_cursor, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=r_SP_IMPUESTOS},"
+            + "  #{PA_EMPLEADO,    mode=IN, jdbcType=VARCHAR}"
             + ") "
             + "}";
     
@@ -65,15 +61,15 @@ public class GeneralValue {
             + "  #{PA_TRIMESTRE,   mode=IN, jdbcType=VARCHAR}"
             + ")"
             + "}";
-    
-    public static final String SP_GETNOMBRE
-            = "{ call PA_COMPANIA.SP_GETNOMBRE ("
-            + "  #{rec_cursor,   mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=r_SP_GETNOMBRE},"
-            + "  #{PA_NOMBRE,    mode=IN, jdbcType=VARCHAR}"            
+
+    public static final String SP_GETNUMEMPLEADO
+            = "{ call PA_COMPANIA.SP_GETEMPLEADO ("
+            + "  #{rec_cursor, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=r_SP_GETNUMEMPLEADO},"
+            + "  #{PA_EMPLEADO,    mode=IN, jdbcType=VARCHAR}"
             + ")"
-            + "}";    
+            + "}";
     
-    //DOCUMENTOS    
+    //DOCUMENTOS
     public static final String SP_GETDOCUMENTOS
             = "{ call PA_DOCUMENTO.SP_GETDOCUMENTOS ("
             + "  #{rec_cursor, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=r_SP_GETDOCUMENTOS}"
@@ -83,6 +79,18 @@ public class GeneralValue {
     public static final String SP_GETSTATUS
             = "{ call PA_DOCUMENTO.SP_GETSTATUS ("
             + "  #{rec_cursor, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=r_SP_GETSTATUS}"           
+            + ")"
+            + "}";
+
+    public static final String SP_GETSTATUS_UNO
+            = "{ call PA_DOCUMENTO.SP_GETSTATUS_UNO ("
+            + "  #{rec_cursor, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=r_SP_GETSTATUS_UNO}"
+            + ")"
+            + "}";
+
+    public static final String SP_GETSTATUS_DOS
+            = "{ call PA_DOCUMENTO.SP_GETSTATUS_DOS ("
+            + "  #{rec_cursor, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=r_SP_GETSTATUS_DOS}"
             + ")"
             + "}";
     
@@ -97,9 +105,23 @@ public class GeneralValue {
     
     public static final String SP_UPDTDOCUMENTOS
             = "{ call PA_DOCUMENTO.SP_UPDTDOCUMENTOS ("
-            + "  #{PA_NOMBRE,    mode=IN, jdbcType=VARCHAR}," 
+            + "  #{PA_EMPLEADO,  mode=IN, jdbcType=VARCHAR},"
             + "  #{PA_DOCUMENT,  mode=IN, jdbcType=VARCHAR},"
             + "  #{PA_STATUS,    mode=IN, jdbcType=VARCHAR}"
             + ")"
             + "}";
+
+    public static final String SP_SETDOCUMENTO
+            = "{ call PA_DOC.SP_SETDOCUMENTO ("
+            + "  #{PA_REGISTROS, mode=IN, jdbcType=CLOB}"
+            + ")"
+            + "}";
+
+    public static final String SP_GETDOCUMENTO
+            = "{ call PA_DOC.SP_GETDOCUMENTO ("
+            + "  #{rec_cursor, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=r_SP_GETDOCUMENTO}"
+            + ")"
+            + "}";
+
+
 }

@@ -1,11 +1,15 @@
 package com.example.mybatis.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.example.mybatis.cifrado.CryptoUtils;
+import com.fasterxml.jackson.annotation.*;
+import lombok.*;
 
-/**
- *
- * @author sebas
- */
+import javax.crypto.SecretKey;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class DeduccionesDTO {
     
     @JsonIgnore
@@ -16,63 +20,17 @@ public class DeduccionesDTO {
     private String fondo;
     private String neto;
 
-    public DeduccionesDTO() {
+    // Encriptar los campos sensibles
+    public void encryptFields(SecretKey key) {
+        try {
+            if (nombre != null) nombre = CryptoUtils.encrypt(nombre, key);
+            if (bruto != null) bruto = CryptoUtils.encrypt(bruto, key);
+            if (ISR != null) ISR = CryptoUtils.encrypt(ISR, key);
+            if (IMSS != null) IMSS = CryptoUtils.encrypt(IMSS, key);
+            if (fondo != null) fondo = CryptoUtils.encrypt(fondo, key);
+            if (neto != null) neto = CryptoUtils.encrypt(neto, key);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-
-    public DeduccionesDTO(String nombre, String bruto, String ISR, String IMSS, String fondo, String neto) {
-        this.nombre = nombre;
-        this.bruto = bruto;
-        this.ISR = ISR;
-        this.IMSS = IMSS;
-        this.fondo = fondo;
-        this.neto = neto;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getBruto() {
-        return bruto;
-    }
-
-    public void setBruto(String bruto) {
-        this.bruto = bruto;
-    }
-
-    public String getISR() {
-        return ISR;
-    }
-
-    public void setISR(String ISR) {
-        this.ISR = ISR;
-    }
-
-    public String getIMSS() {
-        return IMSS;
-    }
-
-    public void setIMSS(String IMSS) {
-        this.IMSS = IMSS;
-    }
-
-    public String getFondo() {
-        return fondo;
-    }
-
-    public void setFondo(String fondo) {
-        this.fondo = fondo;
-    }
-
-    public String getNeto() {
-        return neto;
-    }
-
-    public void setNeto(String neto) {
-        this.neto = neto;
-    }        
 }

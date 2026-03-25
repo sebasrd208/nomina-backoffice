@@ -1,16 +1,11 @@
 package com.example.mybatis.service;
 
-import com.example.mybatis.dto.DocumentoDTO;
 import java.util.*;
+import com.example.mybatis.dto.*;
 import org.springframework.dao.*;
 import com.example.mybatis.mappers.*;
 import org.springframework.stereotype.*;
 import org.springframework.beans.factory.annotation.*;
-
-/**
- *
- * @author sebas
- */
 
 @Service
 public class DocumentoService {
@@ -35,7 +30,25 @@ public class DocumentoService {
 
         return documentos;
     }
-    
+
+    public List<DocumentoDTO> obtenerStatusUno() {
+        Map<String, Object> params = new HashMap<>();
+        mapeo.SP_GETSTATUS_UNO(params);
+
+        List<DocumentoDTO> documentos = (List<DocumentoDTO>) params.get("rec_cursor");
+
+        return documentos;
+    }
+
+    public List<DocumentoDTO> obtenerStatusDos() {
+        Map<String, Object> params = new HashMap<>();
+        mapeo.SP_GETSTATUS_DOS(params);
+
+        List<DocumentoDTO> documentos = (List<DocumentoDTO>) params.get("rec_cursor");
+
+        return documentos;
+    }
+
     public void insertarDocumenctos(DocumentoDTO dto) {
         Map<String, Object> params = new HashMap<>();
         params.put("PA_NOMBRE", dto.getNombre());
@@ -51,8 +64,9 @@ public class DocumentoService {
     }
     
     public void actualizarDocumenctos(DocumentoDTO dto) {
-        Map<String, Object> params = new HashMap<>();        
-        params.put("PA_NOMBRE", dto.getNombre());
+        Map<String, Object> params = new HashMap<>();
+
+        params.put("PA_EMPLEADO", dto.getNumEmpleado());
         params.put("PA_DOCUMENT", dto.getDocumento());
         params.put("PA_STATUS", dto.getStatus());
 
@@ -61,5 +75,13 @@ public class DocumentoService {
         } catch (DataAccessException s) {
             throw new RuntimeException(s.getMostSpecificCause().getMessage());
         }
+    }
+
+    public List<DocumentosDTO> obtenerDoc(DocumentosDTO dto) {
+        Map<String, Object> params = new HashMap<>();
+        mapeo.SP_GETDOCUMENTO(params);
+        List<DocumentosDTO> documentos = (List<DocumentosDTO>) params.get("rec_cursor");
+
+        return documentos;
     }
 }

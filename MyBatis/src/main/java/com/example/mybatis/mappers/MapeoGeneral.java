@@ -1,19 +1,11 @@
 package com.example.mybatis.mappers;
 
-import com.example.mybatis.dto.ImpuestosDTO;
-import com.example.mybatis.dto.DeduccionesDTO;
-import com.example.mybatis.dto.DocumentoDTO;
-import com.example.mybatis.dto.CompaniaDTO;
-import com.example.mybatis.dto.EmpleadoDTO;
 import org.apache.ibatis.annotations.*;
 import com.example.mybatis.values.*;
 import org.apache.ibatis.mapping.*;
+import com.example.mybatis.dto.*;
 import java.util.*;
 
-/**
- *
- * @author sebas
- */
 @Mapper
 public interface MapeoGeneral {
 
@@ -77,14 +69,14 @@ public interface MapeoGeneral {
     @Results(
             id = "r_SP_GETCOMPANIA",
             value = {
-                @Result(property = "idCompania", column = "ID_COMPANIA", id = true),
-                @Result(property = "nombre", column = "NOMBRE"),
+                @Result(property = "idCompania",   column = "ID_COMPANIA", id = true),
+                @Result(property = "nombre",       column = "NOMBRE"),
                 @Result(property = "apellido", column = "APELLIDO"),
-                @Result(property = "num_empleado", column = "NUM_EMPLEADO"),
-                @Result(property = "rfc", column = "RFC"),
-                @Result(property = "compania", column = "COMPANIA"),
-                @Result(property = "nota", column = "NOTA"),
-                @Result(property = "trimestre", column = "TRIMESTRE")
+                @Result(property = "numEmpleado", column = "NUM_EMPLEADO"),
+                @Result(property = "rfc",          column = "RFC"),
+                @Result(property = "compania",     column = "COMPANIA"),
+                @Result(property = "nota",         column = "NOTA"),
+                @Result(property = "trimestre",         column = "TRIMESTRE")
                     
             }
     )
@@ -96,37 +88,36 @@ public interface MapeoGeneral {
     @Select(GeneralValue.SP_SETCOMPANIA)
     @Options(statementType = StatementType.CALLABLE)
     public void SP_SETCOMPANIA(Map<String, Object> params);
-    
+
     @Results(
-            id = "r_SP_GETNOMBRE",
+            id = "r_SP_GETNUMEMPLEADO",
             value = {
-                @Result(property = "idCompania", column = "ID_COMPANIA", id = true),
-                @Result(property = "nombre", column = "NOMBRE"),
-                @Result(property = "apellido", column = "APELLIDO"),
-                @Result(property = "num_empleado", column = "NUM_EMPLEADO"),
-                @Result(property = "rfc", column = "RFC"),
-                @Result(property = "compania", column = "COMPANIA"),
-                @Result(property = "nota", column = "NOTA"),
-                @Result(property = "trimestre", column = "TRIMESTRE")
+                    @Result(property = "idCompania",   column = "ID_COMPANIA", id = true),
+                    @Result(property = "nombre",       column = "NOMBRE"),
+                    @Result(property = "apellido",     column = "APELLIDO"),
+                    @Result(property = "numEmpleado", column = "NUM_EMPLEADO"),
+                    @Result(property = "rfc",          column = "RFC"),
+                    @Result(property = "compania",     column = "COMPANIA"),
+                    @Result(property = "nota",         column = "NOTA"),
+                    @Result(property = "trimestre",         column = "TRIMESTRE")
             }
     )
-    
-    @Select(GeneralValue.SP_GETNOMBRE)
+    @Select(GeneralValue.SP_GETNUMEMPLEADO)
     @Options(statementType = StatementType.CALLABLE)
     @ResultType(CompaniaDTO.class)
-    public void SP_GETNOMBRE(Map<String, Object> params);
-    
+    public void SP_GETNUMEMPLEADO(Map<String, Object> params);
+
     //DOCUMENTO
     
     @Results(
             id = "r_SP_GETDOCUMENTOS",
             value = {
-                @Result(property = "idDocumento", column = "ID_DOCUMENTO", id = true),
-                @Result(property = "nombre", column = "NOMBRE"),
+                @Result(property = "idDocumento",   column = "ID_DOCUMENTO", id = true),
+                @Result(property = "nombre",       column = "NOMBRE"),
                 @Result(property = "apellido", column = "APELLIDO"),
                 @Result(property = "documento", column = "DOCUMENTO"),
-                @Result(property = "correo", column = "CORREO"),
-                @Result(property = "status", column = "STATUS")
+                @Result(property = "correo",          column = "CORREO"),
+                @Result(property = "status",     column = "STATUS")
             }
     )
     @Select(GeneralValue.SP_GETDOCUMENTOS)
@@ -137,19 +128,52 @@ public interface MapeoGeneral {
     @Results(
             id = "r_SP_GETSTATUS",
             value = {
-                @Result(property = "idDocumento", column = "ID_DOCUMENTO", id = true),
-                @Result(property = "nombre", column = "NOMBRE"),
+                @Result(property = "idDocumento",   column = "ID_DOCUMENTO", id = true),
+                @Result(property = "nombre",       column = "NOMBRE"),
                 @Result(property = "apellido", column = "APELLIDO"),
+                @Result(property = "numEmpleado", column = "NUM_EMPLEADO"),
                 @Result(property = "documento", column = "DOCUMENTO"),
-                @Result(property = "correo", column = "CORREO"),
-                @Result(property = "status", column = "STATUS")
+                @Result(property = "correo",          column = "CORREO"),
+                @Result(property = "status",     column = "STATUS")
             }
     )
     @Select(GeneralValue.SP_GETSTATUS)
     @Options(statementType = StatementType.CALLABLE)
     @ResultType(DocumentoDTO.class)
     public void SP_GETSTATUS(Map<String, Object> params);
-    
+
+    @Results(
+            id = "r_SP_GETSTATUS_UNO",
+            value = {
+                    @Result(property = "idDocumento",   column = "ID_DOCUMENTO", id = true),
+                    @Result(property = "nombre",       column = "NOMBRE"),
+                    @Result(property = "apellido", column = "APELLIDO"),
+                    @Result(property = "documento", column = "DOCUMENTO"),
+                    @Result(property = "correo",          column = "CORREO"),
+                    @Result(property = "status",     column = "STATUS")
+            }
+    )
+    @Select(GeneralValue.SP_GETSTATUS_UNO)
+    @Options(statementType = StatementType.CALLABLE)
+    @ResultType(DocumentoDTO.class)
+    public void SP_GETSTATUS_UNO(Map<String, Object> params);
+
+    @Results(
+            id = "r_SP_GETSTATUS_DOS",
+            value = {
+                    @Result(property = "idDocumento",   column = "ID_DOCUMENTO", id = true),
+                    @Result(property = "nombre",       column = "NOMBRE"),
+                    @Result(property = "apellido", column = "APELLIDO"),
+                    @Result(property = "documento", column = "DOCUMENTO"),
+                    @Result(property = "correo",          column = "CORREO"),
+                    @Result(property = "status",     column = "STATUS")
+            }
+    )
+    @Select(GeneralValue.SP_GETSTATUS_DOS)
+    @Options(statementType = StatementType.CALLABLE)
+    @ResultType(DocumentoDTO.class)
+    public void SP_GETSTATUS_DOS(Map<String, Object> params);
+
     @Select(GeneralValue.SP_SETDOCUMENTOS)
     @Options(statementType = StatementType.CALLABLE)
     public void SP_SETDOCUMENTOS(Map<String, Object> params);
@@ -157,4 +181,22 @@ public interface MapeoGeneral {
     @Select(GeneralValue.SP_UPDTDOCUMENTOS)
     @Options(statementType = StatementType.CALLABLE)
     public void SP_UPDTDOCUMENTOS(Map<String, Object> params);
+
+    @Select(GeneralValue.SP_SETDOCUMENTO)
+    @Options(statementType = StatementType.CALLABLE)
+    public void SP_SETDOCUMENTO(Map<String, Object> params);
+
+    @Results(
+            id = "r_SP_GETDOCUMENTO",
+            value = {
+                    @Result(property = "idDocumento", column = "ID_DOCUMENTO", id = true),
+                    @Result(property = "registros",      column = "REGISTROS")
+            }
+    )
+
+    @Select(GeneralValue.SP_GETDOCUMENTO)
+    @Options(statementType = StatementType.CALLABLE)
+    @ResultType(DocumentosDTO.class)
+    public void SP_GETDOCUMENTO(Map<String, Object> params);
+
 }

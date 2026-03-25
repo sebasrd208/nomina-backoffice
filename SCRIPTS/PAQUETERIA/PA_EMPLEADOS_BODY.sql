@@ -70,41 +70,57 @@ CREATE OR REPLACE PACKAGE BODY PA_EMPLEADOS AS
 
     PROCEDURE SP_DEDUCCIONES(
         REC_CURSOR   OUT SYS_REFCURSOR,
-        PA_NOMBRE    IN VARCHAR2
+        PA_EMPLEADO  IN VARCHAR2
     )AS
+        v_empleado NUMBER;
     BEGIN
-        OPEN REC_CURSOR FOR
-            SELECT
-                NOMBRE,                
-                TO_CHAR(SUELDO * 3, 'FM999,999,999') AS SUELDO_BRUTO,    
-                TO_CHAR(ROUND(SUELDO * 3 * 0.12, 2), 'FM999,999,999') AS ISR,
-                TO_CHAR(ROUND(SUELDO * 3 * 0.05, 2), 'FM999,999,999') AS IMSS,  
-                TO_CHAR(ROUND(SUELDO * 3 * 0.03, 2), 'FM999,999,999') AS FONDO_AHORRO,    
-                TO_CHAR(
-                    ROUND(
-                        (SUELDO * 3)
-                        - (SUELDO * 3 * 0.12)
-                        - (SUELDO * 3 * 0.05)
-                        - (SUELDO * 3 * 0.03), 2
-                    ),
-                    'FM999,999,999'
-                )AS SUELDO_NETO
-            FROM TA_EMPLEADO
-            WHERE UPPER(nombre) = UPPER(PA_NOMBRE);
+        IF PA_EMPLEADO IS NULL THEN
+            RAISE_APPLICATION_ERROR(-20000, 'NO SE PERMITEN ESPACIOS VACIOS');
+        ELSIF NOT REGEXP_LIKE(PA_EMPLEADO, '^[0-9]+$') THEN
+            RAISE_APPLICATION_ERROR(-20001, 'EL NUMERO DE EMPLEADO TIENE QUE SER NÚMERICO');
+        ELSE
+            v_empleado := TO_NUMBER(PA_EMPLEADO);
+            OPEN REC_CURSOR FOR
+                SELECT
+                    NOMBRE,                
+                    TO_CHAR(SUELDO * 3, 'FM999,999,999') AS SUELDO_BRUTO,    
+                    TO_CHAR(ROUND(SUELDO * 3 * 0.12, 2), 'FM999,999,999') AS ISR,
+                    TO_CHAR(ROUND(SUELDO * 3 * 0.05, 2), 'FM999,999,999') AS IMSS,  
+                    TO_CHAR(ROUND(SUELDO * 3 * 0.03, 2), 'FM999,999,999') AS FONDO_AHORRO,    
+                    TO_CHAR(
+                        ROUND(
+                            (SUELDO * 3)
+                            - (SUELDO * 3 * 0.12)
+                            - (SUELDO * 3 * 0.05)
+                            - (SUELDO * 3 * 0.03), 2
+                        ),
+                        'FM999,999,999'
+                    )AS SUELDO_NETO
+                FROM TA_EMPLEADO
+                WHERE NUM_EMPLEADO = v_empleado;
+        END IF;
     END SP_DEDUCCIONES;
 
     PROCEDURE SP_IMPUESTOS(
-        REC_CURSOR OUT SYS_REFCURSOR,
-        PA_NOMBRE    IN VARCHAR2
+        REC_CURSOR   OUT SYS_REFCURSOR,
+        PA_EMPLEADO  IN VARCHAR2
     )AS
+        v_empleado NUMBER;
     BEGIN
-        OPEN REC_CURSOR FOR
-            SELECT    
-                NOMBRE,    
-                TO_CHAR(ROUND(SUELDO * 3 * 0.12, 2), 'FM999,999,999') AS ISR,
-                TO_CHAR(ROUND(SUELDO * 3 * 0.05, 2), 'FM999,999,999') AS IMSS,
-                TO_CHAR(ROUND((SUELDO * 3 * 0.12) + (SUELDO * 3 * 0.05), 2), 'FM999,999,999') AS TOTAL_IMPUESTOS
-                FROM TA_EMPLEADO
-            WHERE UPPER(NOMBRE) = UPPER(PA_NOMBRE);
+        IF PA_EMPLEADO IS NULL THEN
+            RAISE_APPLICATION_ERROR(-20000, 'NO SE PERMITEN ESPACIOS VACIOS');
+        ELSIF NOT REGEXP_LIKE(PA_EMPLEADO, '^[0-9]+$') THEN
+            RAISE_APPLICATION_ERROR(-20000, 'EL NUMERO DE EMPLEADO TIENE QUE SER NÚMERICO');
+        ELSE
+            v_empleado := TO_NUMBER(PA_EMPLEADO);
+            OPEN REC_CURSOR FOR
+                SELECT
+                    NOMBRE,
+                    TO_CHAR(ROUND(SUELDO * 3 * 0.12, 2), 'FM999,999,999') AS ISR,
+                    TO_CHAR(ROUND(SUELDO * 3 * 0.05, 2), 'FM999,999,999') AS IMSS,
+                    TO_CHAR(ROUND((SUELDO * 3 * 0.12) + (SUELDO * 3 * 0.05), 2), 'FM999,999,999') AS TOTAL_IMPUESTOS
+                    FROM TA_EMPLEADO
+                WHERE NUM_EMPLEADO = v_empleado;
+        END IF;
     END SP_IMPUESTOS;
 END PA_EMPLEADOS;

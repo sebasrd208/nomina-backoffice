@@ -1,8 +1,11 @@
 package com.example.mybatis.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
@@ -13,36 +16,70 @@ import com.example.mybatis.dto.DeduccionesDTO;
 import com.example.mybatis.dto.ImpuestosDTO;
 import com.example.mybatis.mappers.MapeoGeneral;
 
-/**
- *
- * @author sebas
- */
+import javax.crypto.SecretKey;
+
 @Service
 public class EmpleadoService {
 
     @Autowired
     MapeoGeneral mapeo;
 
-    public SueldoNetoDTO obtenerSueldoNeto(String nombre) {
+    @Autowired
+    SecretKey secretKey;
+
+    public SueldoNetoDTO obtenerSueldoNetoEncriptado(String numEmpleado) {
         Map<String, Object> params = new HashMap<>();
 
-        params.put("PA_NOMBRE", nombre);
-        mapeo.SP_GETNOMBRE(params);
+        params.put("PA_EMPLEADO", numEmpleado);
+        mapeo.SP_GETNUMEMPLEADO(params);
         List<CompaniaDTO> compania = (List<CompaniaDTO>) params.get("rec_cursor");
 
+        for (CompaniaDTO c : compania) {
+            c.encryptFields(secretKey);
+        }
+
         params.clear();
-        params.put("PA_NOMBRE", nombre);
+        params.put("PA_EMPLEADO", numEmpleado);
         mapeo.SP_DEDUCCIONES(params);
         List<DeduccionesDTO> deducciones = (List<DeduccionesDTO>) params.get("rec_cursor");
 
+        for (DeduccionesDTO c : deducciones) {
+            c.encryptFields(secretKey);
+        }
+
         params.clear();
-        params.put("PA_NOMBRE", nombre);
+        params.put("PA_EMPLEADO", numEmpleado);
         mapeo.SP_IMPUESTOS(params);
         List<ImpuestosDTO> impuestos = (List<ImpuestosDTO>) params.get("rec_cursor");
 
-        return new SueldoNetoDTO(nombre, compania, deducciones, impuestos);
+        for (ImpuestosDTO c : impuestos) {
+            c.encryptFields(secretKey);
+        }
+
+        return new SueldoNetoDTO(numEmpleado, compania, deducciones, impuestos);
     }
-   
+
+    public SueldoNetoDTO obtenerSueldoNeto(String numEmpleado) {
+        Map<String, Object> params = new HashMap<>();
+
+        params.put("PA_EMPLEADO", numEmpleado);
+        mapeo.SP_GETNUMEMPLEADO(params);
+        List<CompaniaDTO> compania = (List<CompaniaDTO>) params.get("rec_cursor");
+
+        params.clear();
+        params.put("PA_EMPLEADO", numEmpleado);
+        mapeo.SP_DEDUCCIONES(params);
+        List<DeduccionesDTO> deducciones = (List<DeduccionesDTO>) params.get("rec_cursor");
+
+
+        params.clear();
+        params.put("PA_EMPLEADO", numEmpleado);
+        mapeo.SP_IMPUESTOS(params);
+        List<ImpuestosDTO> impuestos = (List<ImpuestosDTO>) params.get("rec_cursor");
+
+        return new SueldoNetoDTO(numEmpleado, compania, deducciones, impuestos);
+    }
+
     public List<EmpleadoDTO> obtenerEmpleados() {
         Map<String, Object> params = new HashMap<>();
         mapeo.SP_GETEMPLEADO(params);
@@ -79,4 +116,25 @@ public class EmpleadoService {
             throw new RuntimeException(s.getMostSpecificCause().getMessage());
         }
     }
+
+    /*public SueldoNetoDTO obtenerYGuardar(String nombre) {
+        try {
+            SueldoNetoDTO usuario = obtenerSueldoNeto(nombre);
+
+            if (usuario != null) {
+                ObjectMapper objectMapper = new ObjectMapper();
+                String json = objectMapper.writeValueAsString(usuario);
+                Map<String, Object> params = new HashMap<>();
+                params.put("PA_REGISTROS", json);
+
+                mapeo.SP_SETDOCUMENTO(params);
+            }else{
+                throw new RuntimeException("El usuario no existe o no tiene información");
+            }
+
+            return usuario;
+        } catch (Exception e) {
+            throw new RuntimeException("Error al guardar JSON:"+e.getMessage(), e);
+        }
+    }*/
 }

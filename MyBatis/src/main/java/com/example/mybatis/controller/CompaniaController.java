@@ -1,17 +1,13 @@
 package com.example.mybatis.controller;
 
-import com.example.mybatis.dto.CompaniaDTO;
 import java.util.*;
+import com.example.mybatis.dto.*;
 import org.springframework.http.*;
 import com.example.mybatis.service.*;
 import io.swagger.v3.oas.annotations.*;
 import io.swagger.v3.oas.annotations.tags.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.*;
-/**
- *
- * @author sebas
- */
 
 @RestController
 @RequestMapping("/companias")
@@ -42,10 +38,10 @@ public class CompaniaController {
         }
     }
     
-    @GetMapping("/empresa/{nombre}")
+    @GetMapping("/empresa/{numEmpleado}")
     @Operation(summary = "Mostrar datos de la empresa", description = "Se obtienen datos de la empresa donde trabaja esta persona")
-    public ResponseEntity<?> mostrarEmpresa(@PathVariable String nombre){
-        List<CompaniaDTO> usuario = servicio.obtenerNombres(nombre);
+    public ResponseEntity<?> mostrarEmpresa(@PathVariable String numEmpleado){
+        List<CompaniaDTO> usuario = servicio.obtenerEmpleados(numEmpleado);
         if (usuario==null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"Mensaje\":\"No hay contenido en la lista\"}");
         }

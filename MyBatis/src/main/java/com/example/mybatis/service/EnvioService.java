@@ -1,59 +1,45 @@
 package com.example.mybatis.service;
 
-import com.example.mybatis.dto.CompaniaDTO;
-import com.example.mybatis.dto.DeduccionesDTO;
-import java.util.List;
-import com.example.mybatis.dto.DocumentoDTO;
-import com.example.mybatis.dto.ImpuestosDTO;
-import com.example.mybatis.dto.ResultadoEnvioDTO;
-import com.example.mybatis.dto.SueldoNetoDTO;
-import com.lowagie.text.Document;
-import com.lowagie.text.Element;
+import com.example.mybatis.dto.*;
+import com.example.mybatis.mappers.MapeoGeneral;
+import com.lowagie.text.*;
 import com.lowagie.text.Font;
-import com.lowagie.text.Image;
-import com.lowagie.text.PageSize;
-import com.lowagie.text.Paragraph;
-import com.lowagie.text.Phrase;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import jakarta.mail.internet.MimeMessage;
-import java.awt.Color;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Base64;
-import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.mail.javamail.*;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.*;
 
-/**
- *
- * @author sebas
- */
+import java.awt.*;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.util.*;
+import java.util.List;
+
 @Service
-public class EnviosService {
+public class EnvioService {
 
     @Autowired
     DocumentoService servicio;
 
     @Autowired
-    EmpleadoService servicioE;
-
-    @Autowired
     JavaMailSender envioCorreo;
 
-    public byte[] generatePdfSueldo(String nombre) throws Exception {
+    @Autowired
+    EmpleadoService service;
 
-        SueldoNetoDTO dto = servicioE.obtenerSueldoNeto(nombre);
+    public byte[] generatePdfSueldo(String numEmpleado) throws Exception {
+
+        SueldoNetoDTO dto = service.obtenerSueldoNeto(numEmpleado);
 
         if (dto == null || dto.getDatos() == null || dto.getDatos().isEmpty()) {
-            return null; // o lanzar una excepción según tu lógica
+            return null;
         }
 
         ByteArrayOutputStream out;
@@ -77,7 +63,7 @@ public class EnviosService {
             ClassPathResource classPathResource = new ClassPathResource("crunchyroll-logo.png");
             try (InputStream is = classPathResource.getInputStream()) {
                 byte[] bytes = is.readAllBytes();
-                Image logo = Image.getInstance(bytes);
+                com.lowagie.text.Image logo = com.lowagie.text.Image.getInstance(bytes);
                 logo.scaleToFit(150, 75);
                 float x = PageSize.LETTER.getWidth() - 40 - logo.getScaledWidth();
                 float y = PageSize.LETTER.getHeight() - 40 - logo.getScaledHeight();
@@ -114,7 +100,7 @@ public class EnviosService {
             nombreCompleto.setAlignment(Element.ALIGN_LEFT);
             document.add(nombreCompleto);
 
-            Paragraph num_empleado = new Paragraph("No. Empleado: " + datos.getNum_empleado(), smallFont);
+            Paragraph num_empleado = new Paragraph("No. Empleado: " + datos.getNumEmpleado(), smallFont);
             num_empleado.setAlignment(Element.ALIGN_LEFT);
             document.add(num_empleado);
 
@@ -155,16 +141,16 @@ public class EnviosService {
             tablaDeducciones.addCell(hd2);
 
             String[][] filasDeducciones = {
-                {"Importe Total Trabajo", ded.getBruto()},
-                {"ISR", ded.getISR()},
-                {"IMSS", ded.getIMSS()},
-                {"Fondo Retiro", ded.getFondo()},
-                {"Neto Pagado al Empleado", ded.getNeto()}
+                    {"Importe Total Trabajo", ded.getBruto()},
+                    {"ISR", ded.getISR()},
+                    {"IMSS", ded.getIMSS()},
+                    {"Fondo Retiro", ded.getFondo()},
+                    {"Neto Pagado al Empleado", ded.getNeto()}
             };
 
             PdfPCell separator = new PdfPCell();
             separator.setColspan(2);
-            separator.setBorder(Rectangle.BOTTOM);
+            separator.setBorder(com.lowagie.text.Rectangle.BOTTOM);
             separator.setBorderWidth(2);
             separator.setFixedHeight(3f);
 
@@ -213,9 +199,9 @@ public class EnviosService {
             tablaImpuestos.addCell(hi2);
 
             String[][] filasImpuestos = {
-                {"Total Pagado al Gobierno", imp.getImpuesto()},
-                {"ISR", imp.getISR()},
-                {"IMSS", imp.getIMSS()}
+                    {"Total Pagado al Gobierno", imp.getImpuesto()},
+                    {"ISR", imp.getISR()},
+                    {"IMSS", imp.getIMSS()}
             };
 
             PdfPCell separator2 = new PdfPCell();
@@ -251,42 +237,45 @@ public class EnviosService {
     }
 
     @Async
-    public void envioCorreoAdjunto(String correo, String nombre) {
+    public void envioCorreoAdjunto(String correo, String numEmpleado){
         try {
-            byte[] pdfBytes = generatePdfSueldo(nombre);
+            byte[] pdfBytes = generatePdfSueldo(numEmpleado);
 
+            /*if (pdfBytes == null || pdfBytes.length == 0) {
+                throw new IllegalArgumentException("No se pudo generar el PDF para: " + nombre);
+            }*/
             MimeMessage message = envioCorreo.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
+            //helper.setFrom("sebastianramiro175@gmail.com");
             helper.setTo(correo);
             helper.setSubject("Prueba de la API de correo con archivos adjuntos");
             helper.setText("A continuación encontrará el documento adjunto.");
 
-            helper.addAttachment("Recibo_" + nombre + ".pdf", new ByteArrayResource(pdfBytes));
+            helper.addAttachment("Recibo_" + numEmpleado + ".pdf", new ByteArrayResource(pdfBytes));
 
             envioCorreo.send(message);
         } catch (Exception s) {
-            throw new IllegalArgumentException("No se pudo generar el PDF para: " + nombre);
+            throw new IllegalArgumentException("No se pudo generar el PDF para: " + numEmpleado);
         }
     }
 
-    public String generarPdfBase64(String nombre) throws Exception {
-        byte[] pdfBytes = generatePdfSueldo(nombre);
+    public String generarPdfBase64(String numEmpleado) throws Exception {
+        byte[] pdfBytes = generatePdfSueldo(numEmpleado);
         return Base64.getEncoder().encodeToString(pdfBytes);
     }
 
-    public void guardarPdfEnBD(String nombre) {
+    public void guardarPdfEnBD(String numEmpleado) {
         try {
-            String pdfBase64 = generarPdfBase64(nombre);
+            String pdfBase64 = generarPdfBase64(numEmpleado);
             DocumentoDTO dto = new DocumentoDTO();
-            dto.setNombre(nombre);
+            dto.setNumEmpleado(numEmpleado);
             dto.setDocumento(pdfBase64);
             dto.setStatus("1");
-
             servicio.actualizarDocumenctos(dto);
         } catch (Exception e) {
             DocumentoDTO dto = new DocumentoDTO();
-            dto.setNombre(nombre);
+            dto.setNumEmpleado(numEmpleado);
             dto.setDocumento(null);
             dto.setStatus("2");
             servicio.actualizarDocumenctos(dto);
@@ -301,36 +290,26 @@ public class EnviosService {
         List<String> correosFallidos = new ArrayList<>();
 
         for (DocumentoDTO doc : documentosPendientes) {
-            guardarPdfEnBD(doc.getNombre());
+            guardarPdfEnBD(doc.getNumEmpleado());
             try {
-
-                envioCorreoAdjunto(doc.getCorreo(), doc.getNombre());
+                envioCorreoAdjunto(doc.getCorreo(), doc.getNumEmpleado());
                 correosEnviados.add(doc.getCorreo());
 
             } catch (Exception s) {
                 correosFallidos.add(doc.getCorreo());
             }
-        }
 
-        ResultadoEnvioDTO resultado = new ResultadoEnvioDTO();
-        resultado.setTotalEnviados(correosEnviados.isEmpty() ? 0: correosEnviados.size());
-        resultado.setTotalFallidos(correosFallidos.isEmpty() ? 0: correosFallidos.size());
-        
-        if (correosFallidos.isEmpty()) {
-            correosFallidos.add("No hay correos fallidos");
-        }
-
-        if (correosEnviados.isEmpty()) {
-            correosEnviados.add("No hay correos enviados");
         }
 
         long fin = System.currentTimeMillis();
-        
+
+        ResultadoEnvioDTO resultado = new ResultadoEnvioDTO();
         resultado.setCorreosEnviados(correosEnviados);
-        resultado.setCorreosFallidos(correosFallidos);        
+        resultado.setCorreosFallidos(correosFallidos);
+        resultado.setTotalEnviados(correosEnviados.size());
+        resultado.setTotalFallidos(correosFallidos.size());
         resultado.setTiempoEjecucionMs(fin - inicio);
 
         return resultado;
     }
-
 }

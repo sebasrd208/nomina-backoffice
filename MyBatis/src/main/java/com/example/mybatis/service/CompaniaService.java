@@ -1,16 +1,11 @@
 package com.example.mybatis.service;
 
-import com.example.mybatis.dto.CompaniaDTO;
 import java.util.*;
+import com.example.mybatis.dto.*;
 import org.springframework.dao.*;
 import com.example.mybatis.mappers.*;
 import org.springframework.stereotype.*;
 import org.springframework.beans.factory.annotation.*;
-
-/**
- *
- * @author sebas
- */
 
 @Service
 public class CompaniaService {
@@ -29,7 +24,7 @@ public class CompaniaService {
         
     public void insertarCompania(CompaniaDTO dto) {
         Map<String, Object> params = new HashMap<>();        
-        params.put("PA_EMPLEADO", dto.getNum_empleado());
+        params.put("PA_EMPLEADO", dto.getNumEmpleado());
         params.put("PA_NOMBRE", dto.getNombre());
         params.put("PA_APELLIDO", dto.getApellido());
         params.put("PA_RFC", dto.getRfc());
@@ -44,10 +39,10 @@ public class CompaniaService {
         }
     }
     
-    public List<CompaniaDTO> obtenerNombres(String nombre) {
+    public List<CompaniaDTO> obtenerEmpleados(String numEmpleado) {
         Map<String, Object> params = new HashMap<>();
-        params.put("PA_NOMBRE", nombre);
-        mapeo.SP_GETNOMBRE(params);
+        params.put("PA_EMPLEADO", numEmpleado);
+        mapeo.SP_GETNUMEMPLEADO(params);
 
         List<CompaniaDTO> companias = (List<CompaniaDTO>) params.get("rec_cursor");
 

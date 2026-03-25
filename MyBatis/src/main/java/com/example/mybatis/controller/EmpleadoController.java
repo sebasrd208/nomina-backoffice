@@ -1,8 +1,7 @@
 package com.example.mybatis.controller;
 
-import com.example.mybatis.dto.SueldoNetoDTO;
-import com.example.mybatis.dto.EmpleadoDTO;
 import java.util.*;
+import com.example.mybatis.dto.*;
 import org.springframework.http.*;
 import com.example.mybatis.service.*;
 import io.swagger.v3.oas.annotations.*;
@@ -11,10 +10,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.*;
 
-/**
- *
- * @author sebas
- */
 @RestController
 @RequestMapping("/empleados")
 @Tag(name = "EMPLEADOS", description = "API PARA EMPLEADOS")
@@ -24,7 +19,7 @@ public class EmpleadoController {
     EmpleadoService servicio;
 
     @Autowired
-    EnviosService servicioE;
+    EnvioService servicioE;
 
     @GetMapping("/mostrar")
     @Operation(summary = "Mostrar Información", description = "Muestra todos los empleados registradas")
@@ -36,14 +31,28 @@ public class EmpleadoController {
         return ResponseEntity.ok(lista);
     }
 
-    @GetMapping("/neto/{nombre}")
-    @Operation(summary = "Mostrar sueldo neto", description = "Muestra un sueldo neto de un empleado especifico")
-    public ResponseEntity<?> mostrarNeto(@PathVariable String nombre) {
-        SueldoNetoDTO usuario = servicio.obtenerSueldoNeto(nombre);
+    @GetMapping("/neto")
+    @Operation(summary = "Mostrar sueldo neto encriptado", description = "Muestra un sueldo neto de un empleado especifico encriptando datos sencibles")
+    public ResponseEntity<?> mostrarNeto(@RequestParam String nombre) {
+        SueldoNetoDTO usuario = servicio.obtenerSueldoNetoEncriptado(nombre);
         if (usuario == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"Mensaje\":\"No hay contenido en la lista\"}");
         }
         return ResponseEntity.ok(usuario);
+    }
+
+    @GetMapping("/neto-empleado")
+    @Operation(summary = "Mostrar sueldo neto", description = "Muestra un sueldo neto de un empleado especifico")
+    public ResponseEntity<?> mostrarNetoEmpleado(@RequestParam String numEmpleado) {
+        try {
+            SueldoNetoDTO usuario = servicio.obtenerSueldoNeto(numEmpleado);
+            if (usuario == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"Mensaje\":\"No hay contenido en la lista\"}");
+            }
+            return ResponseEntity.ok(usuario);
+        }catch(Exception s){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"Mensaje\":\"Ocurrio un error: "+s.getMessage()+"\"}");
+        }
     }
 
     @PostMapping("/guardar")
@@ -57,6 +66,17 @@ public class EmpleadoController {
         }
     }
 
+    /*@PostMapping("/guardar-json")
+    @Operation(summary = "Registrar JSON", description = "Registra el JSON del empleado")
+    public ResponseEntity<?> guardarJson(@RequestParam String nombre){
+        try {
+            servicio.obtenerYGuardar(nombre);
+            return ResponseEntity.status(HttpStatus.CREATED).body("{\"Mensaje\":\"Registro exitoso\"}");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"" + e.getMessage() + "\"}");
+        }
+    }*/
+
     @PutMapping("/actualizar")
     @Operation(summary = "Actualizar empleado", description = "Actualiza un nueva empleado existente")
     public ResponseEntity<?> actualizar(@RequestBody EmpleadoDTO dto) {
@@ -68,11 +88,11 @@ public class EmpleadoController {
         }
     }
 
-    @GetMapping("/neto/pdf/{nombre}")
+    @GetMapping("/neto/pdf/{numEmpleado}")
     @Operation(summary = "Mostrar sueldo neto", description = "Muestra un sueldo neto de un empleado especifico")
-    public void generarPdf(@PathVariable String nombre, HttpServletResponse response) throws Exception {
+    public void generarPdf(@PathVariable String numEmpleado, HttpServletResponse response) throws Exception {
 
-        byte[] pdfBytes = servicioE.generatePdfSueldo(nombre);
+        byte[] pdfBytes = servicioE.generatePdfSueldo(numEmpleado);
 
         if (pdfBytes == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -81,7 +101,7 @@ public class EmpleadoController {
 
         response.setContentType("application/pdf");
         response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename=\"Recibo_" + nombre + ".pdf\"");
+                "attachment; filename=\"Recibo_" + numEmpleado + ".pdf\"");
         response.getOutputStream().write(pdfBytes);
         response.getOutputStream().flush();
     }

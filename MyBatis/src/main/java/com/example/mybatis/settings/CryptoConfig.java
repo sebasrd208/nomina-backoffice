@@ -1,0 +1,18 @@
+package com.example.mybatis.settings;
+
+import com.example.mybatis.cifrado.CryptoUtils;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import javax.crypto.SecretKey;
+
+@Configuration
+public class CryptoConfig {
+
+    @Bean
+    public SecretKey secretKey() throws Exception {
+
+        String keyStr = "k1mQ8v+X7E4A9sFhYg6zqw==";
+        return CryptoUtils.stringToKey(keyStr);
+    }
+}

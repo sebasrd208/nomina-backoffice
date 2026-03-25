@@ -1,11 +1,15 @@
 package com.example.mybatis.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
+import com.example.mybatis.cifrado.*;
+import javax.crypto.*;
+import lombok.*;
 
-/**
- *
- * @author sebas
- */
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ImpuestosDTO {
     
     @JsonIgnore
@@ -14,45 +18,15 @@ public class ImpuestosDTO {
     private String IMSS;
     private String impuesto;
 
-    public ImpuestosDTO() {
+    // Encriptar los campos sensibles
+    public void encryptFields(SecretKey key) {
+        try {
+            if (ISR != null) ISR = CryptoUtils.encrypt(ISR, key);
+            if (IMSS != null) IMSS = CryptoUtils.encrypt(IMSS, key);
+            if (impuesto != null) impuesto = CryptoUtils.encrypt(impuesto, key);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public ImpuestosDTO(String nombre, String ISR, String IMSS, String impuesto) {
-        this.nombre = nombre;
-        this.ISR = ISR;
-        this.IMSS = IMSS;
-        this.impuesto = impuesto;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getISR() {
-        return ISR;
-    }
-
-    public void setISR(String ISR) {
-        this.ISR = ISR;
-    }
-
-    public String getIMSS() {
-        return IMSS;
-    }
-
-    public void setIMSS(String IMSS) {
-        this.IMSS = IMSS;
-    }
-
-    public String getImpuesto() {
-        return impuesto;
-    }
-
-    public void setImpuesto(String impuesto) {
-        this.impuesto = impuesto;
-    }     
 }
