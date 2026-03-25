@@ -33,12 +33,16 @@ public class EmpleadoController {
 
     @GetMapping("/neto")
     @Operation(summary = "Mostrar sueldo neto encriptado", description = "Muestra un sueldo neto de un empleado especifico encriptando datos sencibles")
-    public ResponseEntity<?> mostrarNeto(@RequestParam String nombre) {
-        SueldoNetoDTO usuario = servicio.obtenerSueldoNetoEncriptado(nombre);
-        if (usuario == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"Mensaje\":\"No hay contenido en la lista\"}");
+    public ResponseEntity<?> mostrarNeto(@RequestParam String numEmpleado) {
+        try {
+            SueldoNetoDTO usuario = servicio.obtenerSueldoNetoEncriptado(numEmpleado);
+            if (usuario == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"Mensaje\":\"No hay contenido en la lista\"}");
+            }
+            return ResponseEntity.ok(usuario);
+        }catch(Exception s){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"Mensaje\":\"Ocurrio un error: "+s.getMessage()+"\"}");
         }
-        return ResponseEntity.ok(usuario);
     }
 
     @GetMapping("/neto-empleado")
