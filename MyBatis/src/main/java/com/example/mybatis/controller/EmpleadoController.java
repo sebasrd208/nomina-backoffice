@@ -121,5 +121,4 @@ public class EmpleadoController {
                     .body("Error al enviar el correo: " + e.getMessage());
         }
     }
-
 }
