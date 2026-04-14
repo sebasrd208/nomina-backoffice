@@ -95,11 +95,11 @@ public interface MapeoGeneral {
                     @Result(property = "idCompania",   column = "ID_COMPANIA", id = true),
                     @Result(property = "nombre",       column = "NOMBRE"),
                     @Result(property = "apellido",     column = "APELLIDO"),
-                    @Result(property = "numEmpleado", column = "NUM_EMPLEADO"),
+                    @Result(property = "numEmpleado",  column = "NUM_EMPLEADO"),
                     @Result(property = "rfc",          column = "RFC"),
                     @Result(property = "compania",     column = "COMPANIA"),
                     @Result(property = "nota",         column = "NOTA"),
-                    @Result(property = "trimestre",         column = "TRIMESTRE")
+                    @Result(property = "trimestre",    column = "TRIMESTRE")
             }
     )
     @Select(GeneralValue.SP_GETNUMEMPLEADO)

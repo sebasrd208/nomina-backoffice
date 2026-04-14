@@ -23,8 +23,7 @@ public class CompaniaService {
     }
         
     public void insertarCompania(CompaniaDTO dto) {
-        Map<String, Object> params = new HashMap<>();        
-        params.put("PA_EMPLEADO", dto.getNumEmpleado());
+        Map<String, Object> params = new HashMap<>();
         params.put("PA_NOMBRE", dto.getNombre());
         params.put("PA_APELLIDO", dto.getApellido());
         params.put("PA_RFC", dto.getRfc());
@@ -48,5 +47,4 @@ public class CompaniaService {
 
         return companias;
     }
-    
 }

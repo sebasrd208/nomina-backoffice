@@ -52,7 +52,6 @@ public class GeneralValue {
         
     public static final String SP_SETCOMPANIA
             = "{ call PA_COMPANIA.SP_SETCOMPANIA ("
-            + "  #{PA_EMPLEADO,    mode=IN, jdbcType=VARCHAR},"
             + "  #{PA_NOMBRE,      mode=IN, jdbcType=VARCHAR},"
             + "  #{PA_APELLIDO,    mode=IN, jdbcType=VARCHAR},"            
             + "  #{PA_RFC,         mode=IN, jdbcType=VARCHAR},"
