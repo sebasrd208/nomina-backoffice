@@ -90,7 +90,7 @@ public class EmpleadoService {
 
     public void insertarEmpleados(EmpleadoDTO dto) {
         Map<String, Object> params = new HashMap<>();
-        params.put("PA_DOCUMENTO", dto.getDocumento());
+        params.put("PA_TELEFONO", dto.getTelefono());
         params.put("PA_APELLIDO", dto.getApellido());
         params.put("PA_NOMBRE", dto.getNombre());
         params.put("PA_SECCION", dto.getSeccion());

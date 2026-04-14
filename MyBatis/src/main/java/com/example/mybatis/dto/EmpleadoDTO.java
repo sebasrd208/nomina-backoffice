@@ -9,7 +9,7 @@ import lombok.*;
 public class EmpleadoDTO {
     
     private Integer idEmpleado;
-    private String documento;
+    private String telefono;
     private String apellido;
     private String nombre;
     private String seccion;

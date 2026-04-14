@@ -12,7 +12,7 @@ public class GeneralValue {
         
     public static final String SP_INSERT_EMPLEADOS
             = "{ call PA_EMPLEADOS.SP_INSERT_EMPLEADOS ("
-            + "  #{PA_DOCUMENTO, mode=IN, jdbcType=VARCHAR},"
+            + "  #{PA_TELEFONO, mode=IN, jdbcType=VARCHAR},"
             + "  #{PA_APELLIDO,  mode=IN, jdbcType=VARCHAR},"
             + "  #{PA_NOMBRE,    mode=IN, jdbcType=VARCHAR},"
             + "  #{PA_SECCION,   mode=IN, jdbcType=VARCHAR},"

@@ -14,7 +14,7 @@ public interface MapeoGeneral {
             id = "r_SP_GETEMPLEADO",
             value = {
                 @Result(property = "idEmpleado", column = "ID_EMPLEADO", id = true),
-                @Result(property = "documento", column = "DOCUMENTO"),
+                @Result(property = "telefono", column = "TELEFONO"),
                 @Result(property = "apellido", column = "APELLIDO"),
                 @Result(property = "nombre", column = "NOMBRE"),
                 @Result(property = "seccion", column = "SECCION"),
