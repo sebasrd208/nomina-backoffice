@@ -182,21 +182,4 @@ public interface MapeoGeneral {
     @Options(statementType = StatementType.CALLABLE)
     public void SP_UPDTDOCUMENTOS(Map<String, Object> params);
 
-    @Select(GeneralValue.SP_SETDOCUMENTO)
-    @Options(statementType = StatementType.CALLABLE)
-    public void SP_SETDOCUMENTO(Map<String, Object> params);
-
-    @Results(
-            id = "r_SP_GETDOCUMENTO",
-            value = {
-                    @Result(property = "idDocumento", column = "ID_DOCUMENTO", id = true),
-                    @Result(property = "registros",      column = "REGISTROS")
-            }
-    )
-
-    @Select(GeneralValue.SP_GETDOCUMENTO)
-    @Options(statementType = StatementType.CALLABLE)
-    @ResultType(DocumentosDTO.class)
-    public void SP_GETDOCUMENTO(Map<String, Object> params);
-
 }

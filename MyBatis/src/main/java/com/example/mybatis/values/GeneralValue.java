@@ -110,17 +110,4 @@ public class GeneralValue {
             + ")"
             + "}";
 
-    public static final String SP_SETDOCUMENTO
-            = "{ call PA_DOC.SP_SETDOCUMENTO ("
-            + "  #{PA_REGISTROS, mode=IN, jdbcType=CLOB}"
-            + ")"
-            + "}";
-
-    public static final String SP_GETDOCUMENTO
-            = "{ call PA_DOC.SP_GETDOCUMENTO ("
-            + "  #{rec_cursor, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=r_SP_GETDOCUMENTO}"
-            + ")"
-            + "}";
-
-
 }

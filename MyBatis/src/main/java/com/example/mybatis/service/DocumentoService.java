@@ -76,12 +76,4 @@ public class DocumentoService {
             throw new RuntimeException(s.getMostSpecificCause().getMessage());
         }
     }
-
-    public List<DocumentosDTO> obtenerDoc(DocumentosDTO dto) {
-        Map<String, Object> params = new HashMap<>();
-        mapeo.SP_GETDOCUMENTO(params);
-        List<DocumentosDTO> documentos = (List<DocumentosDTO>) params.get("rec_cursor");
-
-        return documentos;
-    }
 }
